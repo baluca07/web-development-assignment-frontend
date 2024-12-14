@@ -15,7 +15,7 @@ export default function AddDepartmentForm() {
         };
 
         try {
-            const response = await fetch("http://localhost:8080/api/departments", {
+            const response = await fetch("http://localhost:8080/api/departments/add", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
