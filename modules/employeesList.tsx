@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import {ErrorModule} from "@/modules/errorModule";
 
 interface Employee {
     id: number;
@@ -10,12 +11,13 @@ interface Employee {
 export default function EmployeesList() {
     const [employees, setEmployees] = useState<Employee[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
+    const [error,setError] = useState<string>("");
 
     useEffect(() => {
         fetch("http://localhost:8080/api/departments")
             .then((response) => {
                 if (!response.ok) {
-                    throw new Error("Failed to fetch departments");
+                    setError("Failed to fetch employees");
                 }
                 return response.json();
             })
@@ -32,9 +34,9 @@ export default function EmployeesList() {
     return (
         <div>
             {loading ? (
-                <p>Loading departments...</p>
+                <p>Loading employees...</p>
             ) : employees.length === 0 ? (
-                <p>No departments.</p>
+                <p>No employees.</p>
             ) : (
                 <table>
                     <thead>
@@ -55,6 +57,7 @@ export default function EmployeesList() {
                     </tbody>
                 </table>
             )}
+            <ErrorModule message={error}/>
         </div>
     );
 }

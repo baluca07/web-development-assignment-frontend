@@ -8,6 +8,7 @@ export default function Home() {
             <ul>
                 <li><Link href={"./employees"}>Employees</Link></li>
                 <li><Link href={"./departments"}>Departments</Link></li>
+                <li><Link href={"./add-department"}>Add Departments</Link></li>
             </ul>
         </div>
     );
