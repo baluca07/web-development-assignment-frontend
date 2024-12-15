@@ -9,7 +9,11 @@ export default function AddDepartmentForm() {
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
-
+        const token = localStorage.getItem("token");
+        if (token === null) {
+            setError("You must be logged in to perform this action");
+            return;
+        }
         const department = {
             name: departmentName
         };
@@ -18,13 +22,16 @@ export default function AddDepartmentForm() {
             const response = await fetch("http://localhost:8080/api/departments/add", {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
                 },
                 body: JSON.stringify(department)
             });
 
+
             if (!response.ok) {
                 setError("Failed to add department");
+                return
             }
 
             const data = await response.json();

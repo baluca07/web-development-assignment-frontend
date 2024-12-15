@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Link from "next/link";
+import LogoutButton from "@/modules/logoutButton";
+import LoginButton from "@/modules/loginButton";
+import SignInButton from "@/modules/signInButton";
 
 export const metadata: Metadata = {
   title: "Frontend App",
@@ -15,6 +18,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
+      <div>
+          <LoginButton/>
+          <SignInButton/>
+          <LogoutButton/>
+      </div>
         {children}
       <footer>
           <Link href={"./"}>Home</Link>

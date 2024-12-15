@@ -13,7 +13,9 @@ export default function DepartmentsList() {
     const [error,setError] = useState<string>("");
 
     useEffect(() => {
-        fetch("http://localhost:8080/api/departments/all")
+        fetch("http://localhost:8080/api/departments/all",{
+            method: "GET"
+        })
             .then((response) => {
                 if (!response.ok) {
                     setError("Failed to fetch departments");

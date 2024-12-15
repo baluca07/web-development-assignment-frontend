@@ -1,4 +1,5 @@
 import Link from "next/link";
+import LogoutButton from "@/modules/logoutButton";
 
 export default function Home() {
     return (
@@ -12,6 +13,7 @@ export default function Home() {
                 <li><Link href={"./edit-department"}>Edit Department</Link></li>
                 <li><Link href={"./delete-department"}>Delete Department</Link></li>
             </ul>
+            <LogoutButton/>
         </div>
     );
 }

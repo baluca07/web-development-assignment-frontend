@@ -14,7 +14,9 @@ export default function DeleteDepartmentForm() {
     const [message, setMessage] = useState<string>("");
 
     useEffect(() => {
-        fetch("http://localhost:8080/api/departments/all")
+        fetch("http://localhost:8080/api/departments/all",{
+            method: "GET"
+        })
             .then((response) => response.json())
             .then((data) => setDepartments(data))
             .catch((err) => setError("Failed to load departments: " + err));
@@ -29,6 +31,12 @@ export default function DeleteDepartmentForm() {
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
 
+        const token = localStorage.getItem("token");
+        if (token === null) {
+            setError("You must be logged in to perform this action");
+            return;
+        }
+
         if (!selectedDepartment) {
             setError("Please select a department");
             return;
@@ -37,6 +45,9 @@ export default function DeleteDepartmentForm() {
         try {
             const response = await fetch(`http://localhost:8080/api/departments/delete?id=${selectedDepartment.id}`, {
                 method: "DELETE",
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                },
             });
 
             if (!response.ok) {
