@@ -32,7 +32,6 @@ export default function AddDepartmentForm({onSuccess}:OnSuccessCallBackProp) {
 
     return (
         <div>
-            <h1>Add Department</h1>
             <form onSubmit={handleSubmit}>
                 <label htmlFor="departmentName">Department Name:</label>
                 <input

@@ -49,8 +49,10 @@ export default function DepartmentsOperations() {
             <ErrorModule message={error}/>
             <Link href={"../departments"}>See departments here...</Link>
             {!loggedIn ? <p>Login for operations: <Link href={"../login"}>Login</Link></p> : <>
+                <h1>User operations:</h1>
                 <h2>Add new department</h2>
                 <AddDepartmentForm onSuccess={refreshDepartments}/>
+                <h1>Admin operations:</h1>
                 <h2>Update department</h2>
                 {!loading ? <UpdateDepartmentForm departments={departments} onSuccess={refreshDepartments}/> :
                     <p>Loading...</p>}
