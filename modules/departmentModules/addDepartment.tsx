@@ -1,8 +1,10 @@
 "use client";
 import { useState } from "react";
 import {ErrorModule} from "@/modules/errorModule";
+import {OnSuccessCallBackProp} from "@/modules/interfaces";
+import {PostDepartmentRequest} from "@/modules/departmentModules/departmentRequest";
 
-export default function AddDepartmentForm() {
+export default function AddDepartmentForm({onSuccess}:OnSuccessCallBackProp) {
     const [departmentName, setDepartmentName] = useState("");
     const [error,setError] = useState<string>("");
     const [message,setMessage] = useState<string>("");
@@ -14,32 +16,17 @@ export default function AddDepartmentForm() {
             setError("You must be logged in to perform this action");
             return;
         }
-        const department = {
-            name: departmentName
-        };
-
         try {
-            const response = await fetch("http://localhost:8080/api/departments/add", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`
-                },
-                body: JSON.stringify(department)
-            });
-
-
-            if (!response.ok) {
-                setError("Failed to add department");
-                return
-            }
-
-            const data = await response.json();
-            console.log("Department added:", data);
+            await PostDepartmentRequest(departmentName)
             setMessage("Department added");
             setDepartmentName("");
-        } catch (error) {
-            console.error(error);
+            onSuccess();
+        } catch (err) {
+            if (err instanceof Error) {
+                setError(err.message);
+            } else {
+                setError("An unexpected error occurred");
+            }
         }
     };
 

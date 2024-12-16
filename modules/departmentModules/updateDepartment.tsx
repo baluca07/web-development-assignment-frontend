@@ -1,25 +1,17 @@
 "use client";
-import { useEffect, useState } from "react";
+import {useState } from "react";
 import {ErrorModule} from "@/modules/errorModule";
+import {DepartmentArrayProp, OnSuccessCallBackProp} from "@/modules/interfaces";
+import {PutDepartmentRequest} from "@/modules/departmentModules/departmentRequest";
 
-interface Department {
-    id: number;
-    name: string;
-}
+type UpdateDepartmentFormProps = DepartmentArrayProp & OnSuccessCallBackProp;
 
-export default function EditDepartmentForm() {
-    const [departments, setDepartments] = useState<Department[]>([]);
+export default function UpdateDepartmentForm({ departments, onSuccess }: UpdateDepartmentFormProps) {
     const [selectedId, setSelectedId] = useState<number | null>(null);
     const [departmentName, setDepartmentName] = useState<string>("");
     const [error, setError] = useState<string | null>(null);
     const [message, setMessage] = useState<string>("");
 
-    useEffect(() => {
-        fetch("http://localhost:8080/api/departments/all")
-            .then((response) => response.json())
-            .then((data) => setDepartments(data))
-            .catch((err) => setError("Failed to load departments: " + err));
-    }, []);
 
     const handleDepartmentChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const id = parseInt(event.target.value, 10);
@@ -50,30 +42,13 @@ export default function EditDepartmentForm() {
             return;
         }
 
-        const updatedDepartment = {
-            id: selectedId,
-            name: departmentName
-        };
-
         try {
-            const response = await fetch(`http://localhost:8080/api/departments/update`, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`
-                },
-                body: JSON.stringify(updatedDepartment)
-            });
-
-            if (!response.ok) {
-                setError("Failed to update department");
-                return
-            }
-
-            const data = await response.json();
-            console.log("Department updated:", data);
+            await PutDepartmentRequest(selectedId,departmentName);
             setMessage("Department updated");
             setError(null);
+            setSelectedId(null);
+            setDepartmentName("");
+            onSuccess();
         } catch (err) {
             if (err instanceof Error) {
                 setError(err.message);

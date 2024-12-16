@@ -1,12 +1,9 @@
 "use client";
 import { useEffect, useState } from "react";
 import {ErrorModule} from "@/modules/errorModule";
+import {Employee} from "@/modules/interfaces";
 
-interface Employee {
-    id: number;
-    name: string;
-    departmentId: number;
-}
+
 
 export default function EmployeesList() {
     const [employees, setEmployees] = useState<Employee[]>([]);

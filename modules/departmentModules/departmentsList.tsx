@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import {ErrorModule} from "@/modules/errorModule";
+import {GetDepartmentsRequest} from "@/modules/departmentModules/departmentRequest";
 
 interface Department {
     id: number;
@@ -13,23 +14,21 @@ export default function DepartmentsList() {
     const [error,setError] = useState<string>("");
 
     useEffect(() => {
-        fetch("http://localhost:8080/api/departments/all",{
-            method: "GET"
-        })
-            .then((response) => {
-                if (!response.ok) {
-                    setError("Failed to fetch departments");
-                }
-                return response.json();
-            })
-            .then((data) => {
+        const fetchDepartments = async () => {
+            try {
+                const data = await GetDepartmentsRequest();
                 setDepartments(data);
+            } catch (err) {
+                if (err instanceof Error) {
+                    setError(err.message);
+                } else {
+                    setError("An unexpected error occurred");
+                }
+            } finally {
                 setLoading(false);
-            })
-            .catch((error) => {
-                console.error(error);
-                setLoading(false);
-            });
+            }
+        };
+        fetchDepartments();
     }, []);
 
     return (

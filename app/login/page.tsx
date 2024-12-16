@@ -1,5 +1,6 @@
 "use client";
 import { useState, FormEvent } from 'react';
+import {ErrorModule} from "@/modules/errorModule";
 
 export default function LoginPage() {
     const [email, setEmail] = useState<string>('');
@@ -19,7 +20,7 @@ export default function LoginPage() {
 
         if (response.ok) {
             localStorage.setItem("token",await response.text());
-            window.location.href = '/';
+            window.location.href = '../';
         } else {
             const errorMessage = await response.text();
             setError(errorMessage);
@@ -50,7 +51,7 @@ export default function LoginPage() {
                 </div>
                 <button type="submit">Login</button>
             </form>
-            {error && <p>{error}</p>}
+            <ErrorModule message={error}/>
         </div>
     );
 }

@@ -1,26 +1,16 @@
 "use client";
-import { useEffect, useState } from "react";
+import {useState } from "react";
 import {ErrorModule} from "@/modules/errorModule";
+import {Department, DepartmentArrayProp, OnSuccessCallBackProp} from "@/modules/interfaces";
+import {DeleteDepartmentRequest} from "@/modules/departmentModules/departmentRequest";
 
-interface Department {
-    id: number;
-    name: string;
-}
+type DeleteDepartmentFormProps = DepartmentArrayProp & OnSuccessCallBackProp;
 
-export default function DeleteDepartmentForm() {
-    const [departments, setDepartments] = useState<Department[]>([]);
+export default function DeleteDepartmentForm({ departments, onSuccess }: DeleteDepartmentFormProps) {
     const [selectedDepartment, setSelectedDepartment] = useState<Department | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [message, setMessage] = useState<string>("");
 
-    useEffect(() => {
-        fetch("http://localhost:8080/api/departments/all",{
-            method: "GET"
-        })
-            .then((response) => response.json())
-            .then((data) => setDepartments(data))
-            .catch((err) => setError("Failed to load departments: " + err));
-    }, []);
 
     const handleDepartmentChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const id = parseInt(event.target.value, 10);
@@ -31,33 +21,18 @@ export default function DeleteDepartmentForm() {
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
 
-        const token = localStorage.getItem("token");
-        if (token === null) {
-            setError("You must be logged in to perform this action");
-            return;
-        }
-
         if (!selectedDepartment) {
             setError("Please select a department");
             return;
         }
 
         try {
-            const response = await fetch(`http://localhost:8080/api/departments/delete?id=${selectedDepartment.id}`, {
-                method: "DELETE",
-                headers: {
-                    "Authorization": `Bearer ${token}`
-                },
-            });
-
-            if (!response.ok) {
-                setError("Failed to delete department");
-                return;
-            }
+            await DeleteDepartmentRequest(selectedDepartment.id);
 
             setMessage("Department deleted successfully");
             setError(null);
-            setSelectedDepartment(null); // Reset selected department after successful delete
+            setSelectedDepartment(null);
+            onSuccess();
         } catch (err) {
             if (err instanceof Error) {
                 setError(err.message);

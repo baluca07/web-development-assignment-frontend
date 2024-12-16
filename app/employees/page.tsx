@@ -1,4 +1,4 @@
-import EmployeesList from "@/modules/employeesList";
+import EmployeesList from "@/modules/employeeModules/employeesList";
 
 export default function Employees() {
     return(
