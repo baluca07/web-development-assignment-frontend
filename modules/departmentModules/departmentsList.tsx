@@ -2,11 +2,8 @@
 import { useEffect, useState } from "react";
 import {ErrorModule} from "@/modules/errorModule";
 import {GetDepartmentsRequest} from "@/modules/departmentModules/departmentRequest";
+import {Department} from "@/modules/interfaces";
 
-interface Department {
-    id: number;
-    name: string;
-}
 
 export default function DepartmentsList() {
     const [departments, setDepartments] = useState<Department[]>([]);

@@ -4,14 +4,15 @@ import AddDepartmentForm from "@/modules/departmentModules/addDepartment";
 import UpdateDepartmentForm from "@/modules/departmentModules/updateDepartment";
 import DeleteDepartmentForm from "@/modules/departmentModules/deleteDepartment";
 import {useEffect, useState} from "react";
-import {GetDepartmentsRequest, GetToken} from "@/modules/departmentModules/departmentRequest";
+import {GetDepartmentsRequest} from "@/modules/departmentModules/departmentRequest";
 import {Department} from "@/modules/interfaces";
 import {ErrorModule} from "@/modules/errorModule";
 
-export default function DepartmentsOperations(){
+export default function DepartmentsOperations() {
     const [departments, setDepartments] = useState<Department[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
-    const [error,setError] = useState<string>("");
+    const [error, setError] = useState<string>("");
+    const [loggedIn, setLoggedIn] = useState<boolean>(false);
 
     const fetchDepartments = async () => {
         setLoading(true);
@@ -28,27 +29,36 @@ export default function DepartmentsOperations(){
         }
     };
 
-
     useEffect(() => {
-        GetToken();
+        const token = localStorage.getItem("token");
+        if (token) {
+            setLoggedIn(true);
+        } else {
+            setLoggedIn(false);
+        }
+
         fetchDepartments();
     }, []);
 
     const refreshDepartments = () => {
         fetchDepartments();
     };
-
-    return(
+    return (
         <div>
             <h1>Operations - Departments</h1>
             <ErrorModule message={error}/>
             <Link href={"../departments"}>See departments here...</Link>
-            <h2>Add new department</h2>
-            <AddDepartmentForm onSuccess={refreshDepartments} />
-            <h2>Update department</h2>
-            {!loading ? <UpdateDepartmentForm departments={departments} onSuccess={refreshDepartments}/> : <p>Loading...</p>}
-            <h2>Delete department</h2>
-            {!loading ? <DeleteDepartmentForm departments={departments} onSuccess={refreshDepartments}/> : <p>Loading...</p>}
+            {!loggedIn ? <p>Login for operations: <Link href={"../login"}>Login</Link></p> : <>
+                <h2>Add new department</h2>
+                <AddDepartmentForm onSuccess={refreshDepartments}/>
+                <h2>Update department</h2>
+                {!loading ? <UpdateDepartmentForm departments={departments} onSuccess={refreshDepartments}/> :
+                    <p>Loading...</p>}
+                <h2>Delete department</h2>
+                {!loading ? <DeleteDepartmentForm departments={departments} onSuccess={refreshDepartments}/> :
+                    <p>Loading...</p>}
+            </>}
+
         </div>
     )
 }
