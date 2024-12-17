@@ -28,27 +28,28 @@ export default function DeleteDepartmentForm({ departments, onSuccess }: DeleteD
         event.preventDefault();
 
         if (!selectedDepartment) {
-            setError("Please select a department");
+            setError("Please select a department.");
             return;
         }
         if (token === null) {
-            setError("You must be logged in to perform this action");
+            setError("You must be logged in to perform this action.");
             return;
         }
 
         try {
             await DeleteDepartmentRequest(selectedDepartment.id);
 
-            setMessage("Department deleted successfully");
+            setMessage("Department deleted successfully.");
             setError(null);
             setSelectedDepartment(null);
             await new Promise((resolve) => setTimeout(resolve, 3000));
+            setMessage("")
             onSuccess();
         } catch (err) {
             if (err instanceof Error) {
                 setError(err.message);
             } else {
-                setError("An unexpected error occurred");
+                setError("An unexpected error occurred.");
             }
         }
     };
