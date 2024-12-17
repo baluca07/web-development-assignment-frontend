@@ -17,7 +17,7 @@ export default function DepartmentDetail({ departmentId }: {departmentId: string
             try {
                 const response = await fetch(`http://localhost:8080/api/departments/get?id=${departmentId}`);
                 if (!response.ok) {
-                    throw new Error("Failed to fetch department.");
+                    setError("Failed to fetch department.");
                 }
                 const data = await response.json();
                 setDepartment(data);
