@@ -11,7 +11,7 @@ export default function SignUpButton() {
 
     if (!isLoggedIn) {
         return (
-            <button onClick={handelClick}>Sing In</button>
+            <button onClick={handelClick}>Sing Up</button>
         );
     }
 

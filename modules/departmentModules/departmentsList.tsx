@@ -38,14 +38,14 @@ export default function DepartmentsList() {
                 <table>
                     <thead>
                     <tr>
-                        <th>ID</th>
+                        <th className={`idColumn`}>ID</th>
                         <th>Name</th>
                     </tr>
                     </thead>
                     <tbody>
                     {departments.map((department) => (
                         <tr key={department.id}>
-                            <td>{department.id}</td>
+                            <td className={`id`} >{department.id}</td>
                             <td>{department.name}</td>
                         </tr>
                     ))}

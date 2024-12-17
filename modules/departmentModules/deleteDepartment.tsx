@@ -4,6 +4,8 @@ import {ErrorModule} from "@/modules/errorModule";
 import {Department, DepartmentArrayProp, OnSuccessCallBackProp} from "@/modules/interfaces";
 import {DeleteDepartmentRequest} from "@/modules/departmentModules/departmentRequest";
 import { useAdminCheck } from '@/hooks/useAdminCheck';
+import {useToken} from "@/hooks/useToken";
+import {SuccessModule} from "@/modules/successModule";
 
 type DeleteDepartmentFormProps = DepartmentArrayProp & OnSuccessCallBackProp;
 
@@ -14,6 +16,7 @@ export default function DeleteDepartmentForm({ departments, onSuccess }: DeleteD
 
     const isAdmin = useAdminCheck();
 
+    const {token} = useToken()
 
     const handleDepartmentChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const id = parseInt(event.target.value, 10);
@@ -28,6 +31,10 @@ export default function DeleteDepartmentForm({ departments, onSuccess }: DeleteD
             setError("Please select a department");
             return;
         }
+        if (token === null) {
+            setError("You must be logged in to perform this action");
+            return;
+        }
 
         try {
             await DeleteDepartmentRequest(selectedDepartment.id);
@@ -35,6 +42,7 @@ export default function DeleteDepartmentForm({ departments, onSuccess }: DeleteD
             setMessage("Department deleted successfully");
             setError(null);
             setSelectedDepartment(null);
+            await new Promise((resolve) => setTimeout(resolve, 3000));
             onSuccess();
         } catch (err) {
             if (err instanceof Error) {
@@ -45,8 +53,9 @@ export default function DeleteDepartmentForm({ departments, onSuccess }: DeleteD
         }
     };
 
+
     return (
-        <div>
+        <div className={`formContainer`}>
             {isAdmin ? <>
                 <form onSubmit={handleSubmit}>
                     <div>
@@ -60,13 +69,14 @@ export default function DeleteDepartmentForm({ departments, onSuccess }: DeleteD
                             ))}
                         </select>
                     </div>
-
-                    <button type="submit" disabled={!selectedDepartment}>
-                        Delete Department
-                    </button>
+                    <div className={`buttonContainer`}>
+                        <button type="submit" disabled={!selectedDepartment}>
+                            Delete Department
+                        </button>
+                    </div>
+                    <ErrorModule message={error}/>
+                    <SuccessModule message={message}/>
                 </form>
-                <ErrorModule message={error}/>
-                <p>{message}</p>
             </> : <p>You must be logged in as an admin.</p>}
         </div>
     );

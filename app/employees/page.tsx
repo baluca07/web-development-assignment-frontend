@@ -4,7 +4,7 @@ export default function Employees() {
     return(
         <div>
             <h1>Employees</h1>
-            <EmployeesList />
+            <EmployeesList/>
         </div>
     )
 }

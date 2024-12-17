@@ -11,7 +11,7 @@ export const ErrorModule: React.FC<ErrorModuleProps> = ({ message }) => {
 
     return (
         <div>
-            <p>{message}</p>
+            <p className={`error`}>{message}</p>
         </div>
     );
 };

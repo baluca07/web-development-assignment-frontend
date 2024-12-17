@@ -22,9 +22,8 @@ export default function LoginForm() {
         });
 
         if (response.ok) {
-            await setToken(response).then(() =>
-                window.location.href = '../'
-            )
+            setToken(response);
+            window.location.href = '../';
         } else {
             const errorMessage = await response.text();
             setError(errorMessage);
@@ -32,7 +31,7 @@ export default function LoginForm() {
     };
 
     return (
-        <div>
+        <div className={"authForm"}>
             <form onSubmit={handleLogin}>
                 <div>
                     <label>Email</label>
@@ -52,7 +51,9 @@ export default function LoginForm() {
                         required
                     />
                 </div>
-                <button type="submit">Login</button>
+                <div className="buttonContainer">
+                    <button type="submit">Login</button>
+                </div>
             </form>
             <ErrorModule message={error}/>
         </div>

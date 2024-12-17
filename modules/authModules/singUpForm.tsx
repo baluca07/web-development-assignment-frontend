@@ -3,7 +3,7 @@
 import { useState, FormEvent } from 'react';
 import {ErrorModule} from "@/modules/errorModule";
 
-export default function SigUpForm(){
+export default function SignUpForm(){
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [error, setError] = useState<string>('');
@@ -32,8 +32,7 @@ export default function SigUpForm(){
     };
 
     return (
-        <div>
-            <h1>Sign In</h1>
+        <div className={"authForm"}>
             <form onSubmit={handleSignUp}>
                 <div>
                     <label>Email</label>
@@ -53,7 +52,9 @@ export default function SigUpForm(){
                         required
                     />
                 </div>
-                <button type="submit">Register</button>
+                <div className="buttonContainer">
+                    <button type="submit">Sign up</button>
+                </div>
             </form>
             <ErrorModule message={error}/>
         </div>

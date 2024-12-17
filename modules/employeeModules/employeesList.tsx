@@ -38,17 +38,17 @@ export default function EmployeesList() {
                 <table>
                     <thead>
                     <tr>
-                        <th>ID</th>
+                        <th className={`idColumn`}>ID</th>
                         <th>Name</th>
-                        <th>DepartmentID</th>
+                        <th className={`depId`}>DepartmentID</th>
                     </tr>
                     </thead>
                     <tbody>
                     {employees.map((employee) => (
                         <tr key={employee.id}>
-                            <td>{employee.id}</td>
+                            <td className={`idTable`}>{employee.id}</td>
                             <td>{employee.name}</td>
-                            <td>{employee.departmentId}</td>
+                            <td className={`depId`}>{employee.departmentId}</td>
                         </tr>
                     ))}
                     </tbody>

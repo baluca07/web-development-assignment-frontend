@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Link from "next/link";
-import LogoutButton from "@/modules/authModules/logoutButton";
-import LoginButton from "@/modules/authModules/loginButton";
-import SignInButton from "@/modules/authModules/signInButton";
+import Header from "@/modules/header";
+import Footer from "@/modules/footer";
 
 export const metadata: Metadata = {
   title: "Web Development Assignment Frontend App",
@@ -18,16 +16,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-      <div>
-          <LoginButton/>
-          <SignInButton/>
-          <LogoutButton/>
-      </div>
+      <Header/>
         {children}
-      <footer>
-          <Link href={"../"}>Home</Link>
-          <p>University project, not real data.</p>
-      </footer>
+      <Footer/>
       </body>
     </html>
   );

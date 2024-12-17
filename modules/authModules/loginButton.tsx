@@ -1,5 +1,4 @@
 "use client";
-import { useEffect } from "react";
 import {useLoggedIn} from "@/hooks/useLoggedIn";
 
 export default function LoginButton() {

@@ -1,7 +1,6 @@
 import {Department} from "@/modules/interfaces";
-import {useToken} from "@/hooks/useToken";
 
-export async function GetDepartmentsRequest():Promise<Department[]> {
+export async function GetDepartmentsRequest(): Promise<Department[]> {
     const response = await fetch("http://localhost:8080/api/departments/all", {
         method: "GET"
     });
@@ -11,9 +10,8 @@ export async function GetDepartmentsRequest():Promise<Department[]> {
     return response.json();
 }
 
-export async function DeleteDepartmentRequest(selectedDepartmentId:number):Promise<void> {
-    const {getToken} = useToken()
-    const token = await getToken()
+export async function DeleteDepartmentRequest(selectedDepartmentId: number): Promise<void> {
+    const token = localStorage.getItem('jwt-token');
     const response = await fetch(`http://localhost:8080/api/departments/delete?id=${selectedDepartmentId}`, {
         method: "DELETE",
         headers: {
@@ -28,12 +26,9 @@ export async function DeleteDepartmentRequest(selectedDepartmentId:number):Promi
     }
 }
 
-export async function PostDepartmentRequest(departmentName:String):Promise<void> {
-    const {getToken} = useToken()
-    const token = await getToken()
-    const department = {
-        name: departmentName
-    };
+export async function PostDepartmentRequest(departmentName: String): Promise<void> {
+    const department = { name: departmentName };
+    const token = localStorage.getItem('jwt-token');
     const response = await fetch("http://localhost:8080/api/departments/add", {
         method: "POST",
         headers: {
@@ -50,13 +45,9 @@ export async function PostDepartmentRequest(departmentName:String):Promise<void>
     }
 }
 
-export async function PutDepartmentRequest(selectedId:number,departmentName:String):Promise<void> {
-    const {getToken} = useToken()
-    const token = await getToken()
-    const updatedDepartment = {
-        id: selectedId,
-        name: departmentName
-    };
+export async function PutDepartmentRequest(selectedId: number, departmentName: String): Promise<void> {
+    const updatedDepartment = { id: selectedId, name: departmentName };
+    const token = localStorage.getItem('jwt-token');
     const response = await fetch(`http://localhost:8080/api/departments/update`, {
         method: "PUT",
         headers: {

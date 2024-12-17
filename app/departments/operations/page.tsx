@@ -1,5 +1,4 @@
 "use client";
-import Link from "next/link";
 import AddDepartmentForm from "@/modules/departmentModules/addDepartment";
 import UpdateDepartmentForm from "@/modules/departmentModules/updateDepartment";
 import DeleteDepartmentForm from "@/modules/departmentModules/deleteDepartment";
@@ -8,7 +7,6 @@ import {GetDepartmentsRequest} from "@/modules/departmentModules/departmentReque
 import {Department} from "@/modules/interfaces";
 import {ErrorModule} from "@/modules/errorModule";
 import {useLoggedIn} from "@/hooks/useLoggedIn";
-import {useAdminCheck} from "@/hooks/useAdminCheck";
 
 export default function DepartmentsOperations() {
     const [departments, setDepartments] = useState<Department[]>([]);
@@ -16,7 +14,6 @@ export default function DepartmentsOperations() {
     const [error, setError] = useState<string>("");
 
     const isLoggedIn = useLoggedIn()
-    const isAdmin = useAdminCheck()
 
 
     const fetchDepartments = async () => {
@@ -38,6 +35,10 @@ export default function DepartmentsOperations() {
         fetchDepartments();
     }, []);
 
+    const handleClick = () => {
+        window.location.href = "../departments";
+    };
+
     const refreshDepartments = () => {
         fetchDepartments();
     };
@@ -45,8 +46,10 @@ export default function DepartmentsOperations() {
         <div>
             <h1>Operations - Departments</h1>
             <ErrorModule message={error}/>
-            <Link href={"../departments"}>See departments here...</Link>
-            {!isLoggedIn ? <p>You must be logged in for operations.</p> : <>
+            <div className={`buttonContainer`}>
+                <button onClick={handleClick}>See Departments</button>
+            </div>
+            {!isLoggedIn ? <p>You must be logged in perform these operations.</p> : <>
                 <h1>User operations:</h1>
                 <h2>Add new department</h2>
                 <AddDepartmentForm onSuccess={refreshDepartments}/>
@@ -58,7 +61,6 @@ export default function DepartmentsOperations() {
                 {!loading ? <DeleteDepartmentForm departments={departments} onSuccess={refreshDepartments}/> :
                     <p>Loading...</p>}
             </>}
-
         </div>
     )
 }

@@ -4,6 +4,8 @@ import {ErrorModule} from "@/modules/errorModule";
 import {DepartmentArrayProp, OnSuccessCallBackProp} from "@/modules/interfaces";
 import {PutDepartmentRequest} from "@/modules/departmentModules/departmentRequest";
 import {useAdminCheck} from "@/hooks/useAdminCheck";
+import {useToken} from "@/hooks/useToken";
+import {SuccessModule} from "@/modules/successModule";
 
 type UpdateDepartmentFormProps = DepartmentArrayProp & OnSuccessCallBackProp;
 
@@ -15,6 +17,7 @@ export default function UpdateDepartmentForm({ departments, onSuccess }: UpdateD
 
     const isAdmin = useAdminCheck();
 
+    const {token} = useToken()
 
 
 
@@ -36,7 +39,6 @@ export default function UpdateDepartmentForm({ departments, onSuccess }: UpdateD
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
-        const token = localStorage.getItem("token");
         if (token === null) {
             setError("You must be logged in to perform this action");
             return;
@@ -48,11 +50,13 @@ export default function UpdateDepartmentForm({ departments, onSuccess }: UpdateD
         }
 
         try {
-            await PutDepartmentRequest(selectedId,departmentName);
+                await PutDepartmentRequest(selectedId,departmentName);
+
             setMessage("Department updated");
             setError(null);
             setSelectedId(null);
             setDepartmentName("");
+            await new Promise((resolve) => setTimeout(resolve, 3000));
             onSuccess();
         } catch (err) {
             if (err instanceof Error) {
@@ -64,7 +68,7 @@ export default function UpdateDepartmentForm({ departments, onSuccess }: UpdateD
     };
 
     return (
-        <div>
+        <div className={`formContainer`}>
             {isAdmin ? <>
                 <form onSubmit={handleSubmit}>
                     <div>
@@ -90,13 +94,15 @@ export default function UpdateDepartmentForm({ departments, onSuccess }: UpdateD
                             required
                         />
                     </div>
-
-                    <button type="submit" disabled={!selectedId}>
-                        Update Department
-                    </button>
+                    <div className={`buttonContainer`}>
+                        <button type="submit" disabled={!selectedId}>
+                            Update Department
+                        </button>
+                    </div>
+                    <ErrorModule message={error}/>
+                    <SuccessModule message={message}/>
                 </form>
-                <ErrorModule message={error}/>
-                <p>{message}</p>
+
             </> : <p>You must be logged in as an admin.</p>}
         </div>
     );

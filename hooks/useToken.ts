@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 
 const TOKEN_KEY = 'jwt-token';
@@ -7,14 +9,13 @@ export const useToken = () => {
         localStorage.getItem(TOKEN_KEY)
     );
 
-    const setToken = async (response: Response) => {
-        try {
-            const tokenText = await response.text();
+    const setToken = (response: Response) => {
+        response.text().then((tokenText) => {
             localStorage.setItem(TOKEN_KEY, tokenText);
             setTokenState(tokenText);
-        } catch (error) {
+        }).catch(error => {
             console.error('Failed to set token:', error);
-        }
+        });
     };
 
     const getToken = (): string | null => {
