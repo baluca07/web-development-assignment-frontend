@@ -24,7 +24,11 @@ export default function LoginForm() {
         if (response.ok) {
             setToken(response);
             window.location.href = '../';
-        } else {
+        }
+        if (response.status == 400) {
+            setError("Incorrect username or password");
+        }
+        else {
             const errorMessage = await response.text();
             setError(errorMessage);
         }
@@ -54,8 +58,8 @@ export default function LoginForm() {
                 <div className="buttonContainer">
                     <button type="submit">Login</button>
                 </div>
+                <ErrorModule message={error}/>
             </form>
-            <ErrorModule message={error}/>
         </div>
     );
 }

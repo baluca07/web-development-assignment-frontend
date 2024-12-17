@@ -21,7 +21,11 @@ export default function SignUpForm(){
 
         if (response.ok) {
             window.location.href = '../login';
-        } else {
+        }
+        if (response.status == 400) {
+            setError("User already exists with this email.");
+        }
+        else {
             try {
                 const data = await response.json();
                 setError(data);
@@ -55,8 +59,8 @@ export default function SignUpForm(){
                 <div className="buttonContainer">
                     <button type="submit">Sign up</button>
                 </div>
+                <ErrorModule message={error}/>
             </form>
-            <ErrorModule message={error}/>
         </div>
     );
 };
