@@ -7,12 +7,17 @@ import {useEffect, useState} from "react";
 import {GetDepartmentsRequest} from "@/modules/departmentModules/departmentRequest";
 import {Department} from "@/modules/interfaces";
 import {ErrorModule} from "@/modules/errorModule";
+import {useLoggedIn} from "@/hooks/useLoggedIn";
+import {useAdminCheck} from "@/hooks/useAdminCheck";
 
 export default function DepartmentsOperations() {
     const [departments, setDepartments] = useState<Department[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string>("");
-    const [loggedIn, setLoggedIn] = useState<boolean>(false);
+
+    const isLoggedIn = useLoggedIn()
+    const isAdmin = useAdminCheck()
+
 
     const fetchDepartments = async () => {
         setLoading(true);
@@ -30,13 +35,6 @@ export default function DepartmentsOperations() {
     };
 
     useEffect(() => {
-        const token = localStorage.getItem("token");
-        if (token) {
-            setLoggedIn(true);
-        } else {
-            setLoggedIn(false);
-        }
-
         fetchDepartments();
     }, []);
 
@@ -48,7 +46,7 @@ export default function DepartmentsOperations() {
             <h1>Operations - Departments</h1>
             <ErrorModule message={error}/>
             <Link href={"../departments"}>See departments here...</Link>
-            {!loggedIn ? <p>Login for operations: <Link href={"../login"}>Login</Link></p> : <>
+            {!isLoggedIn ? <p>You must be logged in for operations.</p> : <>
                 <h1>User operations:</h1>
                 <h2>Add new department</h2>
                 <AddDepartmentForm onSuccess={refreshDepartments}/>

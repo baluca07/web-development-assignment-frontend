@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Link from "next/link";
-import LogoutButton from "@/modules/logoutButton";
-import LoginButton from "@/modules/loginButton";
-import SignInButton from "@/modules/signInButton";
+import LogoutButton from "@/modules/authModules/logoutButton";
+import LoginButton from "@/modules/authModules/loginButton";
+import SignInButton from "@/modules/authModules/signInButton";
 
 export const metadata: Metadata = {
   title: "Web Development Assignment Frontend App",

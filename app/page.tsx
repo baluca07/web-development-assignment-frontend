@@ -1,5 +1,5 @@
 import Link from "next/link";
-import LogoutButton from "@/modules/logoutButton";
+import LogoutButton from "@/modules/authModules/logoutButton";
 
 export default function Home() {
     return (

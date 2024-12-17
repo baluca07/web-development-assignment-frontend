@@ -1,13 +1,14 @@
 "use client";
 
 import { useState, FormEvent } from 'react';
+import {ErrorModule} from "@/modules/errorModule";
 
-export default function RegisterPage(){
+export default function SigUpForm(){
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [error, setError] = useState<string>('');
 
-    const handleRegister = async (e: FormEvent) => {
+    const handleSignUp = async (e: FormEvent) => {
         e.preventDefault();
 
         const response = await fetch('http://localhost:8080/auth/register', {
@@ -19,7 +20,7 @@ export default function RegisterPage(){
         });
 
         if (response.ok) {
-            window.location.href = './login';
+            window.location.href = '../login';
         } else {
             try {
                 const data = await response.json();
@@ -33,7 +34,7 @@ export default function RegisterPage(){
     return (
         <div>
             <h1>Sign In</h1>
-            <form onSubmit={handleRegister}>
+            <form onSubmit={handleSignUp}>
                 <div>
                     <label>Email</label>
                     <input
@@ -54,7 +55,7 @@ export default function RegisterPage(){
                 </div>
                 <button type="submit">Register</button>
             </form>
-            {error && <p>{error}</p>}
+            <ErrorModule message={error}/>
         </div>
     );
 };

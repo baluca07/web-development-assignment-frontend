@@ -1,8 +1,9 @@
 "use client";
-import {useState } from "react";
+import {useState} from "react";
 import {ErrorModule} from "@/modules/errorModule";
 import {DepartmentArrayProp, OnSuccessCallBackProp} from "@/modules/interfaces";
 import {PutDepartmentRequest} from "@/modules/departmentModules/departmentRequest";
+import {useAdminCheck} from "@/hooks/useAdminCheck";
 
 type UpdateDepartmentFormProps = DepartmentArrayProp & OnSuccessCallBackProp;
 
@@ -11,6 +12,10 @@ export default function UpdateDepartmentForm({ departments, onSuccess }: UpdateD
     const [departmentName, setDepartmentName] = useState<string>("");
     const [error, setError] = useState<string | null>(null);
     const [message, setMessage] = useState<string>("");
+
+    const isAdmin = useAdminCheck();
+
+
 
 
     const handleDepartmentChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -60,37 +65,39 @@ export default function UpdateDepartmentForm({ departments, onSuccess }: UpdateD
 
     return (
         <div>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label htmlFor="departmentId">Select Department ID:</label>
-                    <select id="departmentId" onChange={handleDepartmentChange}>
-                        <option value="">Select a department</option>
-                        {departments.map((department) => (
-                            <option key={department.id} value={department.id}>
-                                {department.id}
-                            </option>
-                        ))}
-                    </select>
-                </div>
+            {isAdmin ? <>
+                <form onSubmit={handleSubmit}>
+                    <div>
+                        <label htmlFor="departmentId">Select Department ID:</label>
+                        <select id="departmentId" onChange={handleDepartmentChange}>
+                            <option value="">Select a department</option>
+                            {departments.map((department) => (
+                                <option key={department.id} value={department.id}>
+                                    {department.id}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
 
-                <div>
-                    <label htmlFor="departmentName">Department Name:</label>
-                    <input
-                        type="text"
-                        id="departmentName"
-                        value={departmentName}
-                        onChange={handleNameChange}
-                        disabled={!selectedId}
-                        required
-                    />
-                </div>
+                    <div>
+                        <label htmlFor="departmentName">Department Name:</label>
+                        <input
+                            type="text"
+                            id="departmentName"
+                            value={departmentName}
+                            onChange={handleNameChange}
+                            disabled={!selectedId}
+                            required
+                        />
+                    </div>
 
-                <button type="submit" disabled={!selectedId}>
-                    Update Department
-                </button>
-            </form>
-            <ErrorModule message={error}/>
-            <p>{message}</p>
+                    <button type="submit" disabled={!selectedId}>
+                        Update Department
+                    </button>
+                </form>
+                <ErrorModule message={error}/>
+                <p>{message}</p>
+            </> : <p>You must be logged in as an admin.</p>}
         </div>
     );
 }

@@ -1,8 +1,9 @@
 "use client";
-import {useState } from "react";
+import {useState} from "react";
 import {ErrorModule} from "@/modules/errorModule";
 import {Department, DepartmentArrayProp, OnSuccessCallBackProp} from "@/modules/interfaces";
 import {DeleteDepartmentRequest} from "@/modules/departmentModules/departmentRequest";
+import { useAdminCheck } from '@/hooks/useAdminCheck';
 
 type DeleteDepartmentFormProps = DepartmentArrayProp & OnSuccessCallBackProp;
 
@@ -10,6 +11,8 @@ export default function DeleteDepartmentForm({ departments, onSuccess }: DeleteD
     const [selectedDepartment, setSelectedDepartment] = useState<Department | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [message, setMessage] = useState<string>("");
+
+    const isAdmin = useAdminCheck();
 
 
     const handleDepartmentChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -44,25 +47,27 @@ export default function DeleteDepartmentForm({ departments, onSuccess }: DeleteD
 
     return (
         <div>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label htmlFor="departmentId">Select Department to Delete:</label>
-                    <select id="departmentId" onChange={handleDepartmentChange}>
-                        <option value="">Select a department</option>
-                        {departments.map((department) => (
-                            <option key={department.id} value={department.id}>
-                                {department.id} - {department.name}
-                            </option>
-                        ))}
-                    </select>
-                </div>
+            {isAdmin ? <>
+                <form onSubmit={handleSubmit}>
+                    <div>
+                        <label htmlFor="departmentId">Select Department to Delete:</label>
+                        <select id="departmentId" onChange={handleDepartmentChange}>
+                            <option value="">Select a department</option>
+                            {departments.map((department) => (
+                                <option key={department.id} value={department.id}>
+                                    {department.id} - {department.name}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
 
-                <button type="submit" disabled={!selectedDepartment}>
-                    Delete Department
-                </button>
-            </form>
-            <ErrorModule message={error}/>
-            <p>{message}</p>
+                    <button type="submit" disabled={!selectedDepartment}>
+                        Delete Department
+                    </button>
+                </form>
+                <ErrorModule message={error}/>
+                <p>{message}</p>
+            </> : <p>You must be logged in as an admin.</p>}
         </div>
     );
 }
