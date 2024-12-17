@@ -49,7 +49,7 @@ export default function AddDepartmentForm({onSuccess}: OnSuccessCallBackProp) {
                     required
                 />
                 <div className={`buttonContainer`}>
-                    <button type="submit">Add Department</button>
+                    <button type="submit" disabled={!departmentName}>Add Department</button>
                 </div>
                 <ErrorModule message={error}/>
                 <SuccessModule message={message}/>
