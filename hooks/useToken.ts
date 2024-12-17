@@ -8,7 +8,6 @@ export const useToken = () => {
     const [token, setTokenState] = useState<string | null>(null);
 
     useEffect(() => {
-        // Ellenőrizd, hogy a böngészői környezetben fut-e a kód
         if (typeof window !== 'undefined') {
             const storedToken = localStorage.getItem(TOKEN_KEY);
             setTokenState(storedToken);
