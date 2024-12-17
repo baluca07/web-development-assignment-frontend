@@ -1,27 +1,27 @@
 "use client";
-import { useState } from "react";
+import {useState} from "react";
 import {ErrorModule} from "@/modules/errorModule";
 import {OnSuccessCallBackProp} from "@/modules/interfaces";
 import {PostDepartmentRequest} from "@/modules/departmentModules/departmentRequest";
 import {useToken} from "@/hooks/useToken";
 import {SuccessModule} from "@/modules/successModule";
 
-export default function AddDepartmentForm({onSuccess}:OnSuccessCallBackProp) {
+export default function AddDepartmentForm({onSuccess}: OnSuccessCallBackProp) {
     const [departmentName, setDepartmentName] = useState("");
-    const [error,setError] = useState<string>("");
-    const [message,setMessage] = useState<string>("");
+    const [error, setError] = useState<string>("");
+    const [message, setMessage] = useState<string>("");
     const {token} = useToken();
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
         if (token === null) {
-            setError("You must be logged in to perform this action");
+            setError("You must be logged in to perform this action.");
             return;
         }
         try {
             await PostDepartmentRequest(departmentName)
 
-            setMessage("Department added");
+            setMessage("Department added.");
             setDepartmentName("");
             setTimeout(() => {
                 setMessage("");
@@ -31,7 +31,7 @@ export default function AddDepartmentForm({onSuccess}:OnSuccessCallBackProp) {
             if (err instanceof Error) {
                 setError(err.message);
             } else {
-                setError("An unexpected error occurred");
+                setError("An unexpected error occurred.");
             }
         }
     };
@@ -49,7 +49,7 @@ export default function AddDepartmentForm({onSuccess}:OnSuccessCallBackProp) {
                     required
                 />
                 <div className={`buttonContainer`}>
-                <button type="submit">Add Department</button>
+                    <button type="submit">Add Department</button>
                 </div>
                 <ErrorModule message={error}/>
                 <SuccessModule message={message}/>

@@ -39,7 +39,7 @@ export async function PostDepartmentRequest(departmentName: String): Promise<voi
     })
     if (!response.ok) {
         if(response.status === 403) {
-            throw new Error("Failed to add: Invalid token, please log in again.");
+            throw new Error("Failed to add department: Invalid token, please log in again.");
         }
         throw new Error("Failed to add department: " + response.status);
     }
