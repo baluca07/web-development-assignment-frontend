@@ -1,8 +1,7 @@
 "use client";
 import {useState} from "react";
 import {ErrorModule} from "@/modules/errorModule";
-import {DepartmentArrayProp, Employee, EmployeeArrayProp, OnSuccessCallBackProp} from "@/modules/interfaces";
-import {PutDepartmentRequest} from "@/modules/departmentModules/departmentRequest";
+import {DepartmentArrayProp, EmployeeArrayProp, OnSuccessCallBackProp} from "@/modules/interfaces";
 import {useAdminCheck} from "@/hooks/useAdminCheck";
 import {useToken} from "@/hooks/useToken";
 import {SuccessModule} from "@/modules/successModule";
@@ -10,7 +9,7 @@ import {PutEmployeeRequest} from "@/modules/employeeModules/employeeRequest";
 
 type UpdateEmployeeFormProps = EmployeeArrayProp & DepartmentArrayProp & OnSuccessCallBackProp;
 
-export default function UpdateEmployeeForm({ employees,departments, onSuccess }: UpdateEmployeeFormProps) {
+export default function UpdateEmployeeForm({employees, departments, onSuccess}: UpdateEmployeeFormProps) {
     const [selectedId, setSelectedId] = useState<number | null>(null);
     const [employeeName, setEmployeeName] = useState<string>("");
     const [departmentId, setDepartmentId] = useState<number>(null);
@@ -105,16 +104,17 @@ export default function UpdateEmployeeForm({ employees,departments, onSuccess }:
                                 required
                             />
                         </div>
-
-                        <label htmlFor="departmentId">Select Department:</label>
-                        <select id="departmentId" onChange={handleDepartmentChange} value={departmentId || ""}>
-                            <option value="">Select a department</option>
-                            {departments.map((department) => (
-                                <option key={department.id} value={department.id}>
-                                    {department.id} - {department.name}
-                                </option>
-                            ))}
-                        </select>
+                        <div>
+                            <label htmlFor="departmentId">Select Department:</label>
+                            <select id="departmentId" onChange={handleDepartmentChange} value={departmentId || ""}>
+                                <option value="">Select a department</option>
+                                {departments.map((department) => (
+                                    <option key={department.id} value={department.id}>
+                                        {department.id} - {department.name}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
 
                         <div className={`buttonContainer`}>
                             <button type="submit" disabled={!selectedId}>
