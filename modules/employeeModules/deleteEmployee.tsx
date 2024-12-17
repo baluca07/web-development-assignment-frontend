@@ -2,13 +2,10 @@
 import {useState} from "react";
 import {ErrorModule} from "@/modules/errorModule";
 import {
-    Department,
-    DepartmentArrayProp,
     Employee,
     EmployeeArrayProp,
     OnSuccessCallBackProp
 } from "@/modules/interfaces";
-import {DeleteDepartmentRequest} from "@/modules/departmentModules/departmentRequest";
 import { useAdminCheck } from '@/hooks/useAdminCheck';
 import {useToken} from "@/hooks/useToken";
 import {SuccessModule} from "@/modules/successModule";
