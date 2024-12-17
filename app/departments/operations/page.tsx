@@ -49,17 +49,17 @@ export default function DepartmentsOperations() {
             <div className={`buttonContainer`}>
                 <button onClick={handleClick}>See Departments</button>
             </div>
-            {!isLoggedIn ? <p>You must be logged in perform these operations.</p> : <>
+            {loading && (<p className="loading">Loading...</p>)}
+            {(!loading && !isLoggedIn) && <ErrorModule message={"You must be logged in perform these operations."}/>}
+            {isLoggedIn && <>
                 <h1>User operations:</h1>
                 <h2>Add new department</h2>
                 <AddDepartmentForm onSuccess={refreshDepartments}/>
                 <h1>Admin operations:</h1>
                 <h2>Update department</h2>
-                {!loading ? <UpdateDepartmentForm departments={departments} onSuccess={refreshDepartments}/> :
-                    <p>Loading...</p>}
+                <UpdateDepartmentForm departments={departments} onSuccess={refreshDepartments}/>
                 <h2>Delete department</h2>
-                {!loading ? <DeleteDepartmentForm departments={departments} onSuccess={refreshDepartments}/> :
-                    <p>Loading...</p>}
+                <DeleteDepartmentForm departments={departments} onSuccess={refreshDepartments}/>
             </>}
         </div>
     )

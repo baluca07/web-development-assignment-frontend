@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import {ErrorModule} from "@/modules/errorModule";
 import {GetDepartmentsRequest} from "@/modules/departmentModules/departmentRequest";
 import {Department} from "@/modules/interfaces";
+import Error from "next/error";
 
 
 export default function DepartmentsList() {
@@ -19,7 +20,7 @@ export default function DepartmentsList() {
                 if (err instanceof Error) {
                     setError(err.message);
                 } else {
-                    setError("An unexpected error occurred");
+                    setError("An unexpected error occurred.");
                 }
             } finally {
                 setLoading(false);
@@ -31,26 +32,31 @@ export default function DepartmentsList() {
     return (
         <div>
             {loading ? (
-                <p>Loading departments...</p>
+                <p className={'loading'}>Loading departments...</p>
             ) : departments.length === 0 ? (
-                <p>No departments.</p>
+                <ErrorModule message={"No departments."}/>
             ) : (
-                <table>
-                    <thead>
-                    <tr>
-                        <th className={`idColumn`}>ID</th>
-                        <th>Name</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {departments.map((department) => (
-                        <tr key={department.id}>
-                            <td className={`id`} >{department.id}</td>
-                            <td>{department.name}</td>
+                <>
+                    <p className={`text-center`}>Click on the row for department details.</p>
+                    <table>
+                        <thead>
+                        <tr>
+                            <th className={`idColumn`}>ID</th>
+                            <th>Name</th>
                         </tr>
-                    ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                        {departments.map((department) => (
+                            <tr key={department.id} className={'departmentRow'}
+                                onClick={() => window.location.href = `../departments/${department.id}`}>
+                                <td className={`id`}>{department.id}</td>
+                                <td>{department.name}</td>
+                            </tr>
+                        ))}
+                        </tbody>
+                    </table>
+                </>
+
             )}
             <ErrorModule message={error}/>
         </div>
