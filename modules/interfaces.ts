@@ -5,6 +5,7 @@ export interface OnSuccessCallBackProp {
 export interface Department {
     id: number;
     name: string;
+    employees: Employee[];
 }
 
 export interface DepartmentArrayProp {
@@ -15,4 +16,8 @@ export interface Employee {
     id: number;
     name: string;
     departmentId: number;
+}
+
+export interface EmployeeArrayProp {
+    employees: Employee[];
 }
