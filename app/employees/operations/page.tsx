@@ -61,9 +61,9 @@ export default function EmployeeOperations() {
                 <h2>Add new employee</h2>
                 <AddEmployeeForm onSuccess={refreshDepartments} departments={departments}/>
                 <h1>Admin operations:</h1>
-                <h2>Update department</h2>
+                <h2>Update employee</h2>
                 <UpdateEmployeeForm employees={employees} departments={departments} onSuccess={refreshDepartments}/>
-                <h2>Delete department</h2>
+                <h2>Delete employee</h2>
                 <DeleteEmployeeForm employees={employees} onSuccess={refreshDepartments}/>
             </>}
         </div>

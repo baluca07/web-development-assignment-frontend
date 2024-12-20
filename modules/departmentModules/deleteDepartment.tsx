@@ -59,6 +59,8 @@ export default function DeleteDepartmentForm({ departments, onSuccess }: DeleteD
         <div className={`formContainer`}>
             {isAdmin ? <>
                 <form onSubmit={handleSubmit}>
+                    <p className={`message`}>If you delete a department with existing employees, all employees working there are also
+                        deleted.</p>
                     <div>
                         <label htmlFor="departmentId">Select Department to Delete:</label>
                         <select id="departmentId" onChange={handleDepartmentChange}>

@@ -192,4 +192,6 @@ footer{
   @apply text-gray-500 mb-6;
 }
 
-
+.message{
+  @apply text-sm text-gray-500 italic !important;
+}
